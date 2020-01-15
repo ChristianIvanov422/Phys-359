@@ -1,0 +1,22 @@
+HOW TO ADJUST NMR?
+
+- RF probe
+	*
+	* 
+	*
+
+- 90/180 tunning
+	* maximize CH1 by changing A_len
+	* double A_len to get 180
+	* Minimize CH1 using fine tuning capacitor
+	* Minimize CH1 by changing A_len
+	* Repeat last 2 steps until reaching the minimum
+	* divide by 2 A_len to get 90
+	* Adjust the frequency to smooth CH2
+
+- Magnet temperature
+	* adujst to have off leds.
+	* close both magnets switches.
+
+- Magnetic gradients adjustment
+	* play with the gradients to maximize the decay time.
