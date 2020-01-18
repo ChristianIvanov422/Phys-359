@@ -1,0 +1,99 @@
+# TO READ THE FILE, COPY PAST THOSE FUNCTIONS, THEN RUN read_raw_data(nb_data,file_name) 
+# WHERE nb_data IS THE ## OF THE LAST DATA FILE AND file_name IS THE CONSTANT PART IN THE
+# NAME.(eg if the last data file is 0299 file_name.txt, nb_data=299 and file_name='file_name.txt')
+
+# Function to Count Number of Digits in a Number
+def Count_nb_in_nb(Number):
+    Count = 0
+    while(Number > 0):
+        Number = Number // 10
+        Count = Count + 1
+    return Count
+
+# Function to read the numbers which compose a number
+def indiv_digits(number):
+    lenght_nb = Count_nb_in_nb(number)
+
+    if lenght_nb==3:
+        nb_1000 = 0
+    elif lenght_nb==2:    
+        nb_1000 = 0
+        nb_100 = 0
+    elif lenght_nb==1:
+        nb_1000 = 0
+        nb_100 = 0
+        nb_10 = 0    
+    
+    nb_1000 = math.floor(number/1000)
+    nb_100 = math.floor((number-(nb_1000*1000))/100)
+    nb_10 = math.floor((number-(nb_1000*1000)-(nb_100*100))/10)
+    nb_1 = math.floor(number-(nb_1000*1000)-(nb_100*100)-(nb_10*10))
+
+    return nb_1000,nb_100,nb_10,nb_1
+
+# function which collect the data
+def read_raw_data(nb_data,file_name):
+    # creates empty matrix for the data
+    raw_data_without_headers = np.zeros(shape=(nb_data+1,3,1200))
+    # determines the digits of the nb of data set to scan trough all of them
+    digits = indiv_digits(nb_data)
+    # set counter to 0
+    count = 0
+    # 1000 range
+    for h in range(digits[0]+1):
+        # if not the last 1000, scan as normal
+        if h<digits[0]:
+            # 100 range
+            for i in range(10):
+                # 10 range
+                for j in range(10):
+                    # 1 range
+                    for k in range(10):
+                        raw_data = s.data.load('{}{}{}{} {}'.format(h,i,j,k,file_name))
+                        raw_data_without_headers[count][0] = raw_data[0]
+                        raw_data_without_headers[count][1] = raw_data[1]
+                        raw_data_without_headers[count][2] = raw_data[2]
+                        #print('count =',count,'done')
+                        count = count + 1
+        # if the last 1000, scan only the appropiate number of data
+        else:
+            # 100 range
+            for i in range(digits[1]+1):
+                # if not the last 100, scan as normal
+                if i<digits[1]:
+                    # 10 range
+                    for j in range(10):
+                        # 1 range
+                        for k in range(10):
+                            raw_data = s.data.load('{}{}{}{} {}'.format(h,i,j,k,file_name))
+                            raw_data_without_headers[count][0] = raw_data[0]
+                            raw_data_without_headers[count][1] = raw_data[1]
+                            raw_data_without_headers[count][2] = raw_data[2]
+                            #print('count =',count,'done')
+                            count = count + 1
+                # if the last 100, scan only the appropiate number of data
+                else:
+                    for j in range(digits[2]+1):
+                        # if not the last 10, scan as normal
+                        if j<digits[2]:
+                            for k in range(10):
+                                raw_data = s.data.load('{}{}{}{} {}'.format(h,i,j,k,file_name))
+                                raw_data_without_headers[count][0] = raw_data[0]
+                                raw_data_without_headers[count][1] = raw_data[1]
+                                raw_data_without_headers[count][2] = raw_data[2]
+                                #print('count =',count,'done')
+                                count = count + 1
+                        # if the last 10, scan only the appropiate number of data
+                        else:
+                            for k in range(10):
+                                raw_data = s.data.load('{}{}{}{} {}'.format(h,i,j,k,file_name))
+                                raw_data_without_headers[count][0] = raw_data[0]
+                                raw_data_without_headers[count][1] = raw_data[1]
+                                raw_data_without_headers[count][2] = raw_data[2]
+                                #print('count =',count,'done')
+                                count = count + 1
+                                    
+    # Check that the whole code worked
+    print('Data acquired')
+    # Return data                                                              
+    return raw_data_without_headers
